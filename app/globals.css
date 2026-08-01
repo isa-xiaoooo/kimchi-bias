@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+:root {
+  --background: #fff7ed; /* orange-50，与各页面背景一致 */
+  --foreground: #171717;
+  /* 底部导航栏高度（含底部安全区），页面高度按此扣减，避免内容被遮挡 */
+  --nav-h: calc(60px + env(safe-area-inset-bottom));
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* 本 App 是固定的橙白浅色设计，不跟随系统深色模式，
+   否则手机开深色时背景变黑、文字变浅会与设计冲突。 */
+
+html {
+  height: 100%;
+  /* iOS 上禁止字体自动放大，保证在手机上排版稳定 */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100%;
+  color: var(--foreground);
+  /* 中日韩字体优先，其次无衬线 */
+  font-family: var(--font-geist-sans), "PingFang SC", "Microsoft YaHei",
+    "Hiragino Sans GB", "Noto Sans CJK SC", Arial, Helvetica, sans-serif;
+  /* 禁止横向滚动，避免任何元素撑破竖屏宽度 */
+  overflow-x: hidden;
+}
+
+/* 页面主区最小高度 = 动态视口高度 − 底部导航高度。
+   用 100dvh 而非 100vh，避免移动端浏览器地址栏收放时高度跳动。
+   各页面用 .screen-fit 替代 min-h-screen，保证内容恰好落在导航栏之上。 */
+.screen-fit {
+  min-height: calc(100dvh - var(--nav-h));
+}
+
+/* 刘海屏 / 底部手势区安全边距工具类（Tailwind 不自带，手动定义） */
+.pt-safe {
+  padding-top: env(safe-area-inset-top);
+}
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.safe-area-pb {
+  padding-bottom: env(safe-area-inset-bottom);
+}

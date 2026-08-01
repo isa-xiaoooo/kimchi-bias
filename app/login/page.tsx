@@ -22,11 +22,16 @@ export default function LoginPage() {
     setMessage(null)
 
     if (mode === 'register') {
-      const { error } = await supabase.auth.signUp({ email, password })
+      const { data, error } = await supabase.auth.signUp({ email, password })
       if (error) {
         setError(error.message)
+      } else if (data.session) {
+        // session 不为 null = Supabase 没有要求验证（本地开发或配置未生效），直接跳转
+        // 正常开启 Confirm email 后这里不会走到
+        router.push('/')
+        router.refresh()
       } else {
-        // 注册成功后不立即跳转，等用户点邮件里的验证链接
+        // session 为 null = 验证邮件已发出，等待用户点击确认链接
         setMessage('注册成功！请查收邮件，点击验证链接后再回来登录。')
       }
     } else {

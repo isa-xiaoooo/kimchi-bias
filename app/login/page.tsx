@@ -26,9 +26,8 @@ export default function LoginPage() {
       if (error) {
         setError(error.message)
       } else {
-        setMessage('注册成功！正在跳转...')
-        router.push('/')
-        router.refresh()
+        // 注册成功后不立即跳转，等用户点邮件里的验证链接
+        setMessage('注册成功！请查收邮件，点击验证链接后再回来登录。')
       }
     } else {
       const { error } = await supabase.auth.signInWithPassword({ email, password })
